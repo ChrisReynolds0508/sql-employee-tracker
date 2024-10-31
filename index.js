@@ -1,3 +1,4 @@
+
 const { Client } = require('pg');
 const inquirer = require("inquirer");
 
@@ -113,7 +114,9 @@ async function promptManager() {
         message: "What is the new employees' manager ID?"
       }
     ]);
-    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.newRole, answers.managerID], (err, result) => {
+    const managerID = answers.managerID === "" ? null : answers.managerID;
+    
+    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`, [answers.firstName, answers.lastName, answers.newRole, managerID], (err, result) => {
       if (err) throw err;
       console.table(result);
       promptManager();
